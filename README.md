@@ -2,6 +2,8 @@
 
 This is a MATLAB wrapper for the simulated annealing codes originally written by S.V. Isakov et al.
 
+---------------------------------------------------------------------
+
 Copyright (C) 2012-2013 by Sergei Isakov <isakov@itp.phys.ethz.ch>
                            Ilia Zintchenko <zintchenko@itp.phys.ethz.ch>
 
@@ -43,3 +45,7 @@ It contains N couplings and M local fields (not ordered). Each line
 contains three values i, j and c. If i = j the line specifies a local
 field on site i of size h_i = c. Otherwise, the line denotes a
 coupling between spin i and j of value J_ij =c.
+
+There are two output of SA.m: [enery,spinConfig]
+1. Energy is the optimal energy found for each repetition;
+2. spinConfig is a the spin configuration for each minimum energy found. Each row of spinConfig matrix corresponds to a spin configuration. The order of the spin is [0,1,2,3...] as numbered in the input lattice matrix.
