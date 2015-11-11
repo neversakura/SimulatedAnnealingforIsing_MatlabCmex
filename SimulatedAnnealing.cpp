@@ -41,7 +41,9 @@ void mexFunction(
   typedef Algorithm<> alg_type;
   typedef alg_type::lattice_type lattice_type;
   unsigned nsweeps,nreps,rep0;
-  double *config,*outVector;
+  double *config,*energy;
+	double *spinConfig;
+	std::size_t nqubit;
   // Parsing Input
   config=mxGetPr(prhs[0]);
   nreps=(unsigned) config[0];
@@ -51,6 +53,9 @@ void mexFunction(
   nsweeps = sched.size();
   // Read Lattice
   lattice_type lattice(prhs[2]);
+	nqubit=lattice.nqubit();
+	plhs[1] = mxCreateDoubleMatrix(nqubit,nreps,mxREAL);
+	spinConfig=mxGetPr(plhs[1]);
   // init annealing
   alg_type alg(lattice, sched);
   std::size_t offs = 0;
@@ -61,11 +66,13 @@ void mexFunction(
     alg.reset_sites(rep);
     for (std::size_t sweep = 0; sweep < nsweeps; ++sweep)
       alg.do_sweep(sweep);
+		alg.get_config(spinConfig,offs*nqubit);
     offs = alg.get_energies(en, offs);
+
   }
   //Output Data
-  plhs[0] = mxCreateDoubleMatrix(offs,1,mxREAL);
-  outVector = mxGetPr(plhs[0]);
+	plhs[0] = mxCreateDoubleMatrix(offs,1,mxREAL);
+  energy = mxGetPr(plhs[0]);
   for (std::size_t i=0; i<offs; ++i)
-    outVector[i]=en[i];
+    energy[i]=en[i];
 }

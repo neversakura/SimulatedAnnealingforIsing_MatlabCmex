@@ -1,4 +1,4 @@
-function [ energy ] = SA( lattice,nsweeps,reps,schedType,beta0,beta1,rep0)
+function [ energy,sortedSpin ] = SA( lattice,nsweeps,reps,schedType,beta0,beta1,rep0)
 %SA This is a wrapper for C++ simulated annealing code
 %   The input argument should be
 %   1. lattice: The lattice matrix
@@ -38,5 +38,7 @@ if reps<1 || ~isscalar(reps)
 end
 
 schedule=sched(schedType,nsweeps,beta0,beta1);
-energy=SimulatedAnnealing([reps,rep0],schedule,lattice);
+[energy,spinConfig]=SimulatedAnnealing([reps,rep0],schedule,lattice);
+sortedSpin=Rearrange(spinConfig, lattice);
+
 end

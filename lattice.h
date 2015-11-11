@@ -145,10 +145,12 @@ public:
 		}
 	}
 private:
-
 	std::size_t nsites;
 	std::vector<Link> links;
 	index_type maxs;
+
+public:
+	const std::size_t& nqubit() const {return nsites;}
 };
 
 #endif

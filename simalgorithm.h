@@ -125,13 +125,21 @@ template<typename T = uint64_t>
     for(const auto& site : sites){
       value_type tmp = site.hzv;
       for(index_type k = 0; k < site.nneighbs; ++k)
-	tmp += sites[site.neighbs[k]].spin * site.jzv[k] / 2;
-
+      tmp += sites[site.neighbs[k]].spin * site.jzv[k] / 2;
       energy += tmp * site.spin;
     }
 
     en[offs] = energy;
     return offs+1;
+  }
+
+  void get_config(double *spinConfig,std::size_t shift)
+  {
+      std::size_t index = 0;
+      for(const auto& site : sites){
+        spinConfig[shift+index]=(double) site.spin;
+        index++;
+      }
   }
 
   std::string get_info() const {return "algorithm: single-spin generic, variable degree";}
